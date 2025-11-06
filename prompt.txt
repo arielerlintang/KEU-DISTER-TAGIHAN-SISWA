@@ -1,0 +1,1026 @@
+CREATE TABLE bayar (
+  id_bayar int(11) NOT NULL,
+  id_sekolah int(11) NOT NULL,
+  id_tahun_ajaran int(11) NOT NULL DEFAULT 1,
+  id_gelombang int(11) NOT NULL,
+  id_perkelasan int(11) NOT NULL,
+  sifat_bayar enum('wajib','tidak wajib') NOT NULL,
+  jenis_bayar enum('bulanan','tahunan','sekali') NOT NULL,
+  mulai_bayar varchar(10) NOT NULL,
+  untuk_bayar varchar(30) NOT NULL,
+  nominal_bayar int(11) NOT NULL,
+  angsur_bayar enum('ya','tidak') NOT NULL,
+  prioritas_bayar int(11) DEFAULT NULL,
+  syarat_ganjil_bayar enum('ya','tidak') DEFAULT 'tidak',
+  nominal_ganjil_bayar int(11) DEFAULT NULL,
+  syarat_genap_bayar enum('ya','tidak') DEFAULT 'tidak',
+  nominal_genap_bayar int(11) DEFAULT NULL,
+  created_at datetime DEFAULT NULL,
+  updated_at datetime DEFAULT NULL,
+  deleted_at datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table bayar
+--
+
+INSERT INTO bayar (id_bayar, id_sekolah, id_tahun_ajaran, id_gelombang, id_perkelasan, sifat_bayar, jenis_bayar, mulai_bayar, untuk_bayar, nominal_bayar, angsur_bayar, prioritas_bayar, syarat_ganjil_bayar, nominal_ganjil_bayar, syarat_genap_bayar, nominal_genap_bayar, created_at, updated_at, deleted_at) VALUES
+(1, 1, 1, 1, 1, 'wajib', 'bulanan', 'Juli', 'spp', 100000, 'tidak', NULL, 'tidak', NULL, 'tidak', NULL, '2021-06-21 14:49:11', '2021-06-23 01:54:19', NULL),
+(2, 1, 1, 1, 1, 'wajib', 'bulanan', 'Juli', 'praktek', 50000, 'tidak', NULL, 'tidak', NULL, 'tidak', NULL, '2021-06-21 14:49:36', NULL, NULL),
+
+
+CREATE TABLE pembayaran (
+  id_pembayaran int(11) NOT NULL,
+  id_sekolah int(11) NOT NULL,
+  id_konfirmasi int(11) NOT NULL,
+  id_bayar int(11) NOT NULL,
+  id_siswakelas int(11) NOT NULL,
+  id_rekening int(11) NOT NULL,
+  nominal_pembayaran int(11) NOT NULL,
+  potongan_pembayaran int(11) NOT NULL,
+  untuk_pembayaran varchar(255) NOT NULL,
+  ke_pembayaran int(11) NOT NULL DEFAULT 1,
+  created_at datetime DEFAULT NULL,
+  updated_at datetime DEFAULT NULL,
+  deleted_at datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table pembayaran
+--
+
+INSERT INTO pembayaran (id_pembayaran, id_sekolah, id_konfirmasi, id_bayar, id_siswakelas, id_rekening, nominal_pembayaran, potongan_pembayaran, untuk_pembayaran, ke_pembayaran, created_at, updated_at, deleted_at) VALUES
+(4, 3, 3, 6, 277, 4, 100000, 0, 'januari', 1, '2021-09-26 18:49:27', '2021-09-26 18:49:27', NULL),
+(27, 1, 11, 1, 2, 1, 100000, 0, 'januari', 1, '2022-01-10 21:05:11', '2022-01-10 21:05:11', NULL),
+
+
+
+
+
+CREATE TABLE potongan (
+  id_potongan int(11) NOT NULL,
+  id_sekolah int(11) NOT NULL,
+  id_bayar int(11) NOT NULL,
+  id_siswakelas int(11) NOT NULL,
+  nominal_potongan int(11) NOT NULL,
+  created_at datetime DEFAULT NULL,
+  updated_at datetime DEFAULT NULL,
+  deleted_at datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table potongan
+--
+
+INSERT INTO potongan (id_potongan, id_sekolah, id_bayar, id_siswakelas, nominal_potongan, created_at, updated_at, deleted_at) VALUES
+(1, 28, 146, 2081, 10000, '2023-08-02 15:45:17', '2023-08-03 14:20:38', '2023-08-03 14:20:38'),
+(2, 28, 146, 2082, 10000, '2023-08-02 15:45:17', '2023-08-03 14:20:33', '2023-08-03 14:20:33'),
+(3, 28, 11
+
+
+
+CREATE TABLE tagihan (
+  id_tagihan bigint(20) UNSIGNED NOT NULL,
+  kode_tagihan varchar(255) NOT NULL,
+  angsuran_ke tinyint(3) UNSIGNED DEFAULT NULL,
+  total_angsuran tinyint(3) UNSIGNED DEFAULT NULL,
+  id_sekolah bigint(20) UNSIGNED NOT NULL,
+  id_tahun_ajaran bigint(20) UNSIGNED DEFAULT NULL,
+  nama_tahun_ajaran varchar(100) DEFAULT NULL,
+  id_perkelasan bigint(20) UNSIGNED DEFAULT NULL,
+  nama_kelas varchar(100) DEFAULT NULL,
+  jenjang_kelas varchar(50) DEFAULT NULL,
+  id_siswakelas bigint(20) UNSIGNED DEFAULT NULL,
+  id_siswa bigint(20) UNSIGNED NOT NULL,
+  nipd_siswa varchar(32) DEFAULT NULL,
+  nama_siswa varchar(150) DEFAULT NULL,
+  id_bayar bigint(20) UNSIGNED NOT NULL,
+  id_rekening int(11) DEFAULT NULL,
+  sifat_tagihan varchar(20) DEFAULT NULL,
+  jenis_tagihan varchar(50) DEFAULT NULL,
+  untuk_tagihan varchar(50) DEFAULT NULL,
+  angsur_tagihan enum('ya','tidak') DEFAULT NULL,
+  periode_bulan tinyint(3) UNSIGNED DEFAULT NULL,
+  periode_nama varchar(12) DEFAULT NULL,
+  ke_tagihan int(10) UNSIGNED DEFAULT NULL,
+  nominal_tagihan int(10) UNSIGNED NOT NULL,
+  potongan_tagihan int(10) UNSIGNED NOT NULL DEFAULT 0,
+  jumlah_pembayaran int(10) UNSIGNED NOT NULL DEFAULT 0,
+  jumlah_potongan int(10) UNSIGNED NOT NULL DEFAULT 0,
+  alasan_potongan varchar(255) DEFAULT NULL,
+  tanggal_pembayaran datetime DEFAULT NULL,
+  bukti_pembayaran varchar(255) DEFAULT NULL,
+  created_at datetime DEFAULT NULL,
+  updated_at datetime DEFAULT NULL,
+  deleted_at datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table tagihan
+--
+
+INSERT INTO tagihan (id_tagihan, kode_tagihan, angsuran_ke, total_angsuran, id_sekolah, id_tahun_ajaran, nama_tahun_ajaran, id_perkelasan, nama_kelas, jenjang_kelas, id_siswakelas, id_siswa, nipd_siswa, nama_siswa, id_bayar, id_rekening, sifat_tagihan, jenis_tagihan, untuk_tagihan, angsur_tagihan, periode_bulan, periode_nama, ke_tagihan, nominal_tagihan, potongan_tagihan, jumlah_pembayaran, jumlah_potongan, alasan_potongan, tanggal_pembayaran, bukti_pembayaran, created_at, updated_at, deleted_at) VALUES
+(1, 'TH-20250825-0001', NULL, NULL, 17, 117, '2025-2026', 295, 'A', '10', 10121, 6621, '252655002', 'Usagi', 389, NULL, 'wajib', 'bulanan', 'SPP', NULL, NULL, 'juli', 1, 150000, 0, 150000, 0, 'karena siswa berprestasi', '2025-08-01 13:03:00', NULL, '2025-08-25 14:37:03', '2025-08-26 13:03:35', NULL),
+(2, 'TH-20250825-0002', NULL, NULL, 17, 117, '2025-2026', 295, 'A', '10', 10121, 6621, '252655002', 'Usagi', 389, 53, 'wajib', 'bulanan', 'SPP', NULL, NULL, 'agustus', 1, 150000, 0, 150000, 0, NULL, '2025-07-28 11:35:50', NULL, '2025-08-25 14:37:03', '2025-08-25 14:37:03', NULL),
+
+
+DIATAS DALAH TABEL SAYA 
+PERATURANNYA LAMA ADALAH SEBAGAI BERIKUT 
+1. jadi dulu yang di pakai untuk pembayaran siswa adalah tabel, bayar (tagihan per kelas lah ), potongan (potongan kepada siswa ), dan pembayaran ( pembayaram siswa )
+jadi smisal siswa A punya tagihan 100.000 jenis pembayaran bulanan kemudian , dapat potongan sebesar 20.000 brrti kan yang harus dibayar adlaah 80.000
+
+Tapi ini berlaku seterusnya , alias yha dia harus  bayar 80.000 terus kedepannya , dan Tidak bisa diubah menjadi 90.000 tagihannya
+suatu ketika ada masalah yakni , bulan juli Tagihannya 80.000 namun di bulan bulan depannya agustus, september , dan oktober jadi 90.000
+
+Maka dari itu muncul inovasi baru yakni Konsep pembayaran lama dihilangkan dan diganti dengan tabel "tagihan" , jadi sebelum melakukan pembayaran
+harus punya fitur Generate data Tagihan terlebih dahulu ini sudah , inti dari fitur generate itu adalah menambahkan ke tabel tagihan , namun masih mengambil data dari tabel :
+bayar dan potongan, ( Tapi nanti potongannya bisa diedit sesuka hati dan ini sudah ada fiturnya )
+inti dari fitur Generate itu  adalah menambahkan data ke tabel tagihan , jika jenis_bayarnya tahunan maka akan ada 1 data dasar dengan mengambil potongan ( jika ada ) dari tabel potongan , namun jika tidak ada yah NULL , kemudian di input penerimaannnya harusnya mengedit data pertama , kemudian jika bisa diangsur input  penerimaannya data pertama berarti Update data dari tabel tagihan ,namun jika bisa diangsur maka Input pnerimaannya adalah insert ke tabel tagihan namun berdasarkan id_perkelasan dan id_siswa_kelas , ( intinya data ke 1 itu adalah main data nya potongan pun ambil dari data pertama )
+
+
+jika generate tagihan jenis_bayar nya bulanan maka ada 12 data dimulai dari juli ke juni ( karena sekolahan ) pada input penerimaan yha menjalankan edit data 
+
+
+untuk jenis bayar sekali itu sama nasibnya seperti Tahunan ,
+
+PERMINTAAN DAN MASALAH 
+
+nah disini yang masih menjadi masalah adalah formulir penerimaannya , dimana dia belum ambil data dari Gnerate Tagihan alias tidak sinkron, sehingga jika Tagihannya itu sudah di beri potongan pada tagihan perkelasan (Yaitu menu untuk memberi potongan ) tidak muncul di input penerimaan , harusnya kan sinkron begitu , sudah ada sinkronnya tapi masih dari tabel bayar 
+
+Nah saya Minta anda untuk mensinkronkan itu , Kalau pun Data Tagihannya belum ada brrti belum di generate suruh di generate dulu dari menu tagihan perkelasan dibawa ini saya berikan skrip Controller dan view DAN SEPERTINYA PERMASALAHANNYA ADA PADA function tagihan_siswakelas()
+
+BAGAIMANAKAH PERBAIKANNYA KHUSUS ITU DAN MOHON TETAP PERTAHANKAN LOGIC YANG LAMA SAYA HANYA MINTA UNTUK MENSINKRONKAN AGAR NGAMBIL DATANYA DARI TAGIHAN , JIKA KOSONG MAKA MUNCULKAN SAJA ALERT UNTUK GENEREATE 
+
+Ini Controller 
+<?php
+
+namespace App\Controllers;
+
+use App\Models\PerkelasanModel;
+use App\Models\SiswakelasModel;
+use App\Models\TagihanModel;
+use App\Models\BayarModel;
+use App\Models\PembayaranModel;
+use App\Models\PotonganModel;
+use App\Models\KonfirmasiModel;
+use App\Models\KelasModel;
+use App\Models\RekeningModel;
+use App\Models\SekolahModel;
+use App\Models\AdministratorModel;
+
+
+class Tagihan extends BaseController
+{
+    protected $perkelasanModel;
+    protected $SiswakelasModel;
+    protected $TagihanModel;
+    protected $BayarModel;
+    protected $PembayaranModel;
+    protected $PotonganModel;
+    protected $KonfirmasiModel;
+    protected $KelasModel;
+    protected $RekeningModel;
+    protected $SekolahModel;
+    protected $AdministratorModel;
+
+    public function __construct()
+    {
+        $this->PerkelasanModel  = new PerkelasanModel();
+        $this->SiswakelasModel  = new SiswakelasModel();
+        $this->TagihanModel     = new TagihanModel();
+        $this->BayarModel       = new BayarModel();
+        $this->PembayaranModel  = new PembayaranModel();
+        $this->PotonganModel    = new PotonganModel();
+        $this->KelasModel    = new KelasModel();
+        $this->KonfirmasiModel  = new KonfirmasiModel();
+        $this->RekeningModel  = new RekeningModel();
+        $this->SekolahModel  = new SekolahModel();
+        $this->AdministratorModel  = new AdministratorModel();
+    }
+
+
+    public function index($id_bayar = 0, $tglm = false, $tgls = false)
+    {
+        $tglm       = $tglm     == false ? date("Y-m-d", strtotime("-12 months")) : $tglm;
+        $tgls       = $tgls     == false ? date("Y-m-d") : $tgls;
+
+        if ($this->request->getMethod() == 'post') {
+            $id_bayar   = $this->request->getVar('id_bayar');
+            $tglm       = $this->request->getVar('tglm');
+            $tgls       = $this->request->getVar('tgls');
+
+            return redirect()->to('/tagihan/'.$id_bayar.'/'.$tglm.'/'.$tgls);
+        }
+
+        $data['id_bayar']   = $id_bayar;
+        $data['tglm']       = $tglm;
+        $data['tgls']       = $tgls;
+
+        $data['rekening']   = $this->RekeningModel->where('id_sekolah', $this->id_sekolah)->findAll();
+
+        $this->BayarModel->join('perkelasan','bayar.id_perkelasan=perkelasan.id_perkelasan','left');
+        $this->BayarModel->join('kelas','perkelasan.id_kelas=kelas.id_kelas','left');
+        $this->BayarModel->join('jurusan', 'kelas.id_jurusan=jurusan.id_jurusan', 'left');
+        $data['bayar'] = $this->BayarModel->where(['bayar.id_sekolah' => $this->id_sekolah, 'perkelasan.id_tahun_ajaran' => $this->tahun])->orderBy('jenjang_kelas', 'ASC')->findAll();
+
+        $this->PerkelasanModel->join('kelas', 'perkelasan.id_kelas=kelas.id_kelas', 'left');
+        $this->PerkelasanModel->join('jurusan', 'kelas.id_jurusan=jurusan.id_jurusan', 'left');
+        $data['perkelasan'] = $this->PerkelasanModel->where('perkelasan.id_sekolah', $this->id_sekolah)->where('perkelasan.id_tahun_ajaran', $this->tahun)->findAll();
+
+
+        $start = $tglm . ' 00:00:00';
+        $end   = $tgls . ' 23:59:59';
+
+        $builder = $this->TagihanModel
+        ->select("
+            tagihan.id_tagihan,
+            tagihan.jumlah_pembayaran  AS nominal_pembayaran,  
+            tagihan.potongan_tagihan   AS potongan_pembayaran, 
+            tagihan.tanggal_pembayaran,
+            tagihan.untuk_tagihan      AS untuk_bayar,         
+            tagihan.periode_nama       AS untuk_pembayaran,    
+            tagihan.nama_tahun_ajaran,                         
+            siswa.nama_siswa,
+            siswa.nipd_siswa,
+            kelas.jenjang_kelas,
+            kelas.nama_kelas,
+            jurusan.kode_jurusan,
+            tagihan.id_perkelasan
+            ")
+        ->join('siswa',      'siswa.id_siswa = tagihan.id_siswa', 'left')
+        ->join('perkelasan', 'perkelasan.id_perkelasan = tagihan.id_perkelasan', 'left')
+        ->join('kelas',      'kelas.id_kelas = perkelasan.id_kelas', 'left')
+        ->join('jurusan',    'jurusan.id_jurusan = kelas.id_jurusan', 'left')
+        ->where('tagihan.id_sekolah', $this->id_sekolah)
+        ->where('tagihan.deleted_at', null)
+        ->where('tagihan.tanggal_pembayaran >=', $start)
+        ->where('tagihan.tanggal_pembayaran <=', $end);
+
+        if (!empty($id_bayar) && (int)$id_bayar !== 0) {
+            $builder->where('tagihan.id_bayar', (int)$id_bayar);
+        }
+
+        $data['tagihan'] = $builder
+        ->orderBy('tagihan.tanggal_pembayaran', 'DESC')
+        ->findAll();
+
+
+        echo view('layout/header');
+        echo view('keu/tagihan',$data);
+        echo view('layout/footer');
+    }
+
+    public function tagihan_siswakelas()
+{
+    if (!$this->request->getVar('id_siswakelas')) {
+        echo '<div class="alert alert-purple alert-dismissible">';
+        echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+        echo '<h5><i class="bi bi-info-lg"></i> Perhatian!</h5>';
+        echo 'Anda harus memilih <b>Kelas</b> dan <b>Siswa</b> terlebih dahulu untuk menampilkan <b>Item Penerimaan</b>.';
+        echo '</div>';
+        return;
+    }
+
+    $this->SiswakelasModel->join("perkelasan", "siswakelas.id_perkelasan=perkelasan.id_perkelasan");
+    $siswakelas = $this->SiswakelasModel->find($this->request->getVar('id_siswakelas'));
+
+    $where1 = [
+        'bayar.id_sekolah'      => $this->id_sekolah,
+        'bayar.id_tahun_ajaran' => $siswakelas['id_tahun_ajaran'],
+        'bayar.id_perkelasan'   => $siswakelas['id_perkelasan'],
+    ];
+    $bayar = $this->BayarModel->where($where1)->findAll();
+
+    $tagihan = [];
+
+    foreach ($bayar as $key => $value) {
+        // Ambil data pembayaran yang sudah BENAR-BENAR dibayar (tidak NULL)
+        $pembayaran = $this->TagihanModel
+        ->where('id_bayar', $value['id_bayar'])
+        ->where('id_siswakelas', $siswakelas['id_siswakelas'])
+        ->where('jumlah_pembayaran IS NOT NULL')
+        ->where('tanggal_pembayaran IS NOT NULL')
+        ->where('id_rekening IS NOT NULL') // Tambahkan pengecekan id_rekening
+        ->where('deleted_at', null)
+        ->findAll();
+
+        $terbayar  = 0;
+        $terpotong = 0;
+        foreach ($pembayaran as $v) {
+            $terbayar  += (int)$v['jumlah_pembayaran'] - (int)$v['potongan_tagihan'];
+            $terpotong += (int)$v['potongan_tagihan'];
+        }
+
+        // Ambil data potongan
+        $potonganRow = $this->PotonganModel
+        ->where('id_bayar', $value['id_bayar'])
+        ->where('id_siswakelas', $siswakelas['id_siswakelas'])
+        ->first();
+        $potongan = empty($potonganRow) ? 0 : (int)$potonganRow['nominal_potongan'];
+
+        if ($value['jenis_bayar'] == 'bulanan') {
+            $terpotong += (12 - count($pembayaran)) * $potongan;
+        } else {
+            if ($value['angsur_bayar'] == 'ya') {
+                $terpotong = $terpotong <= $potongan ? $potongan : $terpotong;
+            } else {
+                $terpotong = $terpotong == 0 ? $potongan : $terpotong;
+            }
+        }
+
+        $tagihan[$key] = [
+            'id_bayar'  => $value['id_bayar'],
+            'sifat'     => $value['sifat_bayar'],
+            'jenis'     => $value['jenis_bayar'],
+            'untuk'     => $value['untuk_bayar'],
+            'nominal'   => (int)$value['nominal_bayar'],
+            'angsur'    => $value['angsur_bayar'],
+            'potongan'  => (int)$potongan,
+            'tagihan'   => $value['jenis_bayar'] == 'bulanan'
+            ? ((int)$value['nominal_bayar'] * 12)
+            : (int)$value['nominal_bayar'],
+            'terpotong' => (int)$terpotong,
+            'terbayar'  => (int)$terbayar,
+        ];
+        $tagihan[$key]['sisa'] = $tagihan[$key]['tagihan'] - $tagihan[$key]['terpotong'] - $tagihan[$key]['terbayar'];
+
+        // PERBAIKAN untuk tagihan bulanan - ambil data yang sudah digenerate
+        if ($value['jenis_bayar'] === 'bulanan') {
+            // Ambil semua data tagihan bulanan yang sudah digenerate (baik yang sudah dibayar maupun belum)
+            $allTagihanBulanan = $this->TagihanModel
+            ->select('id_tagihan, periode_nama, jumlah_pembayaran, tanggal_pembayaran, id_rekening')
+            ->where('id_bayar', $value['id_bayar'])
+            ->where('id_siswakelas', $siswakelas['id_siswakelas'])
+            ->where('jenis_tagihan', 'bulanan')
+            ->where('deleted_at', null)
+            ->findAll();
+
+            $paidMonths = [];
+            $unpaidTagihan = [];
+
+            foreach ($allTagihanBulanan as $row) {
+                if (!empty($row['periode_nama'])) {
+                    $bulan = strtolower(trim($row['periode_nama']));
+                    
+                    // Jika sudah dibayar (semua field terisi)
+                    if (!is_null($row['jumlah_pembayaran']) && 
+                        !is_null($row['tanggal_pembayaran']) && 
+                        !is_null($row['id_rekening'])) {
+                        $paidMonths[] = $bulan;
+                } else {
+                        // Jika belum dibayar (masih ada yang NULL) - simpan untuk ditampilkan
+                    $unpaidTagihan[] = [
+                        'id_tagihan' => $row['id_tagihan'],
+                        'bulan' => $bulan
+                    ];
+                }
+            }
+        }
+
+        $tagihan[$key]['bulan_belum_bayar'] = array_column($unpaidTagihan, 'bulan');
+        $tagihan[$key]['bulan_terbayar'] = array_unique($paidMonths);
+        $tagihan[$key]['unpaid_tagihan_data'] = $unpaidTagihan;
+
+    } else {
+            // Untuk tagihan satuan - cek status pembayaran
+        if ($value['angsur_bayar'] === 'ya') {
+                // Untuk tagihan yang bisa diangsur
+                // Cek apakah ada data yang belum dibayar (untuk update)
+            $unpaidSatuan = $this->TagihanModel
+            ->select('id_tagihan')
+            ->where('id_bayar', $value['id_bayar'])
+            ->where('id_siswakelas', $siswakelas['id_siswakelas'])
+            ->where('jenis_tagihan !=', 'bulanan')
+            ->where('jumlah_pembayaran IS NULL')
+            ->where('tanggal_pembayaran IS NULL')
+            ->where('id_rekening IS NULL')
+            ->where('deleted_at', null)
+            ->first();
+
+                // Hitung berapa kali sudah dibayar (untuk menentukan angsuran ke berapa)
+            $countPaid = $this->TagihanModel
+            ->where('id_bayar', $value['id_bayar'])
+            ->where('id_siswakelas', $siswakelas['id_siswakelas'])
+            ->where('jenis_tagihan !=', 'bulanan')
+            ->where('jumlah_pembayaran IS NOT NULL')
+            ->where('tanggal_pembayaran IS NOT NULL')
+            ->where('id_rekening IS NOT NULL')
+            ->where('deleted_at', null)
+            ->countAllResults();
+
+            $tagihan[$key]['unpaid_satuan_id'] = $unpaidSatuan ? $unpaidSatuan['id_tagihan'] : null;
+            $tagihan[$key]['is_first_payment'] = ($countPaid == 0 && $unpaidSatuan);
+            $tagihan[$key]['angsuran_ke'] = $countPaid + 1;
+        } else {
+                // Untuk tagihan sekali bayar
+            $unpaidSatuan = $this->TagihanModel
+            ->select('id_tagihan')
+            ->where('id_bayar', $value['id_bayar'])
+            ->where('id_siswakelas', $siswakelas['id_siswakelas'])
+            ->where('jenis_tagihan !=', 'bulanan')
+            ->where('jumlah_pembayaran IS NULL')
+            ->where('tanggal_pembayaran IS NULL')
+            ->where('id_rekening IS NULL')
+            ->where('deleted_at', null)
+            ->first();
+
+            $tagihan[$key]['unpaid_satuan_id'] = $unpaidSatuan ? $unpaidSatuan['id_tagihan'] : null;
+            $tagihan[$key]['is_first_payment'] = true;
+            $tagihan[$key]['angsuran_ke'] = 1;
+        }
+
+        $tagihan[$key]['bulan_belum_bayar'] = [];
+        $tagihan[$key]['bulan_terbayar'] = [];
+    }
+}
+
+if (empty($tagihan)) {
+    echo "";
+    return;
+}
+
+echo "<label>Item Pembayaran</label>";
+
+foreach ($tagihan as $key => $value) {
+    $untuk  = strlen($value['untuk']) > 3 ? ucfirst($value['untuk']) : strtoupper($value['untuk']);
+    $sifat  = $value['sifat'] == 'wajib' ? " <small class='text-success'>(Wajib)</small>" : "";
+    $angsur = $value['angsur'] == 'ya' ? " <small class='text-info'>(Angsur)</small>" : "";
+
+    echo "<div class='row'>";
+    echo "  <div class='col-md-6'>";
+    if ($value['jenis'] == 'bulanan') {
+        echo "    <label class='mb-0'>{$untuk}{$sifat}{$angsur}</label>";
+        echo "    <small> @ Rp. ".number_format(max($value['nominal'] - $value['potongan'],0), 0, ',', '.')."</small>";
+    } else {
+        echo "    <label class='mb-0'>{$untuk}{$angsur}</label>";
+    }
+
+    echo "    <p class='mb-1 text-muted small'>";
+    if ($value['terpotong'] == 0) {
+        echo "      Tagihan : Rp. ".number_format($value['tagihan'], 0, ',', '.')." <br>";
+    } else {
+        echo "      Tagihan : Rp. ".number_format($value['tagihan'], 0, ',', '.')." dg Potongan : Rp. ".number_format($value['terpotong'], 0, ',', '.')."<br>";
+    }
+
+    if ($value['sisa'] <= 0) {
+        echo "      Terbayar : Rp. ".number_format($value['terbayar'], 0, ',', '.')." - <strong class='text-success'>Sudah Lunas</strong>";
+    } else {
+        echo "      Terbayar : Rp. ".number_format($value['terbayar'], 0, ',', '.')." dg <strong>kurang bayar : Rp. ".number_format($value['sisa'], 0, ',', '.')."</strong>";
+    }
+    echo "    </p>";
+    echo "  </div>";
+
+    if ($value['jenis'] !== 'bulanan') {
+            // Untuk tagihan SATUAN
+        if ($value['sisa'] <= 0) {
+            echo "  <div class='col-md-6 offset-md-6'>";
+            echo "    <div class='alert alert-success mt-2 mb-0 py-1 px-2'><strong>Sudah Lunas</strong></div>";
+            echo "  </div>";
+        } else {
+            $disabled = "";
+            $placeholder = "Nominal";
+
+            echo "  <div class='col-md-1'>";
+            echo "    <div class='form-group mt-3'>";
+            echo "      <div class='custom-control custom-checkbox'>";
+            echo "        <input class='custom-control-input box' type='checkbox' id='check{$value['id_bayar']}' data-target='#input{$value['id_bayar']}' name='id_bayar[]' value='{$value['id_bayar']}' {$disabled}>";
+            echo "        <label for='check{$value['id_bayar']}' class='custom-control-label'></label>";
+            echo "      </div>";
+            echo "    </div>";
+            echo "  </div>";
+            echo "  <div class='col-md-5'>";
+            echo "    <input type='text' class='form-control form-control-border mt-2 nominal inputbox' id='input{$value['id_bayar']}' name='nominal_pembayaran[]' placeholder='{$placeholder}' disabled='disabled'>";
+            echo "    <input type='hidden' name='periode_nama[]' value='".$value['untuk']."'>";
+            echo "    <input type='hidden' name='id_bayar_ref[]' value='{$value['id_bayar']}'>";
+
+                // Tambahkan informasi untuk menentukan UPDATE atau INSERT
+            if (!empty($value['unpaid_satuan_id'])) {
+                echo "    <input type='hidden' name='id_tagihan_update[]' value='{$value['unpaid_satuan_id']}'>";
+                echo "    <input type='hidden' name='is_first_payment[]' value='" . ($value['is_first_payment'] ? '1' : '0') . "'>";
+            } else {
+                echo "    <input type='hidden' name='id_tagihan_update[]' value=''>";
+                echo "    <input type='hidden' name='is_first_payment[]' value='0'>";
+            }
+            echo "    <input type='hidden' name='angsuran_ke[]' value='{$value['angsuran_ke']}'>";
+
+            echo "  </div>";
+        }
+    } else {
+            // Untuk tagihan BULANAN (tetap sama)
+        echo "  <div class='col-md-6'></div>";
+
+        $nominalPerBulan = max($value['nominal'] - $value['potongan'], 0);
+        $unpaidMonths = $value['bulan_belum_bayar'];
+        $unpaidData = $value['unpaid_tagihan_data'] ?? [];
+
+        if (empty($unpaidMonths)) {
+            echo "  <div class='col-md-6 offset-md-6'>";
+            echo "    <div class='alert alert-success mt-2 mb-0 py-1 px-2'><strong>Semua bulan telah lunas.</strong></div>";
+            echo "  </div>";
+        } else {
+            $tagihanIdMap = [];
+            foreach ($unpaidData as $ud) {
+                $tagihanIdMap[$ud['bulan']] = $ud['id_tagihan'];
+            }
+
+            foreach ($unpaidMonths as $bulan) {
+                $idC  = "check{$value['id_bayar']}_{$bulan}";
+                $idIn = "input{$value['id_bayar']}_{$bulan}";
+                $idTagihan = $tagihanIdMap[$bulan] ?? '';
+
+                echo "  <div class='col-md-1'>";
+                echo "    <div class='form-group mt-2'>";
+                echo "      <div class='custom-control custom-checkbox'>";
+                echo "        <input class='custom-control-input box-bulan' type='checkbox' id='{$idC}' data-target='#{$idIn}'>";
+                echo "        <label for='{$idC}' class='custom-control-label'></label>";
+                echo "      </div>";
+                echo "    </div>";
+                echo "  </div>";
+                echo "  <div class='col-md-5'>";
+                echo "    <div class='input-group mt-2'>";
+                echo "      <div class='input-group-prepend'><span class='input-group-text' style='min-width:100px;'>".ucfirst($bulan)."</span></div>";
+                echo "      <input type='text' class='form-control form-control-border nominal inputbox' id='{$idIn}' name='nominal_pembayaran[]' placeholder='Nominal' value='Rp. ".number_format($nominalPerBulan,0,',','.')."' disabled>";
+                echo "    </div>";
+
+                echo "    <input type='hidden' name='periode_nama[]' value='{$bulan}' disabled>";
+                echo "    <input type='hidden' name='id_bayar_ref[]' value='{$value['id_bayar']}' disabled>";
+                echo "    <input type='hidden' name='id_tagihan_update[]' value='{$idTagihan}' disabled>";
+                echo "    <input type='hidden' name='is_first_payment[]' value='1' disabled>";
+                echo "    <input type='hidden' name='angsuran_ke[]' value='1' disabled>";
+                echo "  </div>";
+            }
+        }
+    }
+
+    echo "</div>";
+}
+
+    // Tabungan section (tetap sama)
+echo "<div class='row'>";
+echo "  <div class='col-md-6'><label class='mt-3'>Tabungan</label></div>";
+echo "  <div class='col-md-1'>";
+echo "    <div class='form-group mt-3'>";
+echo "      <div class='custom-control custom-checkbox'>";
+echo "        <input class='custom-control-input box' type='checkbox' id='checktabungan' data-target='#inputtabungan' name='tabungan' value='tabungan'>";
+echo "        <label for='checktabungan' class='custom-control-label'></label>";
+echo "      </div>";
+echo "    </div>";
+echo "  </div>";
+echo "  <div class='col-md-5'>";
+echo "    <input type='text' class='form-control form-control-border mt-2 nominal inputbox' id='inputtabungan' name='nominal_tabungan' placeholder='Nominal' disabled='disabled'>";
+echo "  </div>";
+echo "</div>";
+}
+
+
+    public function simpan_tagihan_bulanan()
+{
+    $id = $this->request->getPost('id_tagihan');
+
+    $data = [
+        'nominal_tagihan'   => str_replace('.', '', $this->request->getPost('nominal_tagihan')),
+        'jumlah_potongan'   => str_replace('.', '', $this->request->getPost('jumlah_potongan')),
+        'jumlah_pembayaran' => str_replace('.', '', $this->request->getPost('jumlah_pembayaran')),
+        'tanggal_pembayaran'=> $this->request->getPost('tanggal_pembayaran'),
+        'updated_at'        => date('Y-m-d H:i:s')
+    ];
+
+    $this->TagihanModel->update($id, $data);
+
+    return redirect()->back()->with('pesan', 'Berhasil Mengubah Tagihan Bulanan');
+}
+
+
+
+
+
+
+
+
+
+dibawah ini adlaah View saya 
+<?php if (!session('tahun')): ?>
+  <div class="alert alert-purple alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h5><i class="icon fas fa-info"></i> Perhatian!</h5>
+    Anda harus memilih <b>Tahun Ajaran</b> terlebih dahulu untuk menampilkan data <b>Tagihan</b>.
+  </div>
+  <?php else: ?>
+    <div class="alert alert-purple alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h5><i class="icon fas fa-info"></i> Perhatian!</h5>
+      Menampilkan data <b>Tagihan</b> untuk <b>Tahun Ajaran <?php echo ambil_tahun(); ?></b>.
+    </div>
+  <?php endif ?>
+  <div class="row">
+    <div class="mb-3">
+      <a class="btn-sm btn btn-purple active" aria-current="page" href="<?php echo base_url("tagihan") ?>">Tagihan Terbayar</a>
+      <a class="btn-sm btn btn-outline-purple" href="<?php echo base_url("tagihan/perkelasan") ?>">Tagihan Perkelasan</a>
+    </div>
+    <div class="col-md-12">
+      <div class="card card-purple card-outline">
+        <div class="card-header">
+          <h3 class="card-title">Item Tagihan</h3>
+          <div class="card-tools">
+            <a class="btn btn-outline-purple" href="<?php echo base_url('tagihan/'.$id_bayar.'/'.date('Y-m-d').'/'.date('Y-m-d')) ?>">
+              <i class="bi bi-calendar-event" data-toggle="tooltip" data-placement="left" title="Hari Ini"></i> &nbsp;Hari Ini
+            </a>
+            <a class="btn btn-outline-purple" href="<?php echo base_url('tagihan/'.$id_bayar.'/'.date('Y-m-01').'/'.date('Y-m-t')) ?>">
+              <i class="bi bi-calendar-month" data-toggle="tooltip" data-placement="left" title="Bulan Ini"></i> &nbsp;Bulan Ini
+            </a>
+            <a data-toggle="modal" data-target="#modalbayar" class="btn btn-purple">
+              <i class="bi bi-credit-card" data-toggle="tooltip" data-placement="left" title="Input Penerimaan"></i> &nbsp;Input Penerimaan
+            </a>
+          </div>
+        </div>
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-12 pt-2 pr-2 pb-2">
+              <form method="post">
+                <div class="row">
+                  <div class="col-md-4">
+                    <select class="form-control select2" name="id_bayar" onchange="this.form.submit()">
+                      <option value="0" <?php echo $id_bayar == 0 ? 'selected' : '' ?>>Tampilkan Semua</option>
+                      <?php foreach ($bayar as $key => $value): ?>
+                        <option value="<?php echo $value['id_bayar'] ?>" <?php echo $id_bayar == $value['id_bayar'] ? 'selected' : '' ?>>
+                          Kelas <?php echo $value['jenjang_kelas'] ?> - <?php echo $value['singkatan_jurusan'] ?> - <?php echo $value['nama_kelas'] ?> |
+                          <?php echo strlen($value['untuk_bayar']) > 3 ? ucfirst($value['untuk_bayar']) : strtoupper($value['untuk_bayar']) ?>
+                        </option>
+                      <?php endforeach ?>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <input type="date" class="form-control form-control-border" name="tglm" value="<?php echo $tglm ?>">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="date" class="form-control form-control-border" name="tgls" value="<?php echo $tgls ?>">
+                  </div>
+                  <div class="col-md-2">
+                    <button class="btn btn-purple btn-block">Filter</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table id="dtbl" class="table table-no-bordered" cellspacing="0" width="100%" style="width:100%">
+              <thead class="text-purple">
+                <tr>
+                  <th>Siswa</th>
+                  <th>Kelas</th>
+                  <th>Nominal</th>
+                  <th>Untuk</th>
+                  <th>Tanggal</th>
+                  <th class="text-center disabled-sorting" nowrap="true">Pilihan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php $ts=0 ?>
+                <?php if (!empty($tagihan)): ?>
+                  <?php foreach ($tagihan as $key => $value): ?>
+                    <?php $ts += ((int)$value['nominal_pembayaran'] - (int)$value['potongan_pembayaran']); ?>
+                    <tr>
+                      <td>
+                        <?php echo esc($value['nama_siswa']) ?><br>
+                        <small><?php echo esc($value['nipd_siswa']) ?></small>
+                      </td>
+                      <td>
+                        <?php echo esc($value['jenjang_kelas']) ?> - <?php echo esc($value['kode_jurusan']) ?> - <?php echo esc($value['nama_kelas']) ?><br>
+                        <small><?php echo esc($value['nama_tahun_ajaran']) ?></small>
+                      </td>
+                      <td>
+                        Rp. <?php echo number_format((int)$value['nominal_pembayaran'] - (int)$value['potongan_pembayaran'], 0, ',', '.') ?>
+                        <?php if ((int)$value['potongan_pembayaran'] > 0): ?>
+                          <br><small>Potongan : Rp. <?php echo number_format((int)$value['potongan_pembayaran'], 0, ',', '.') ?></small>
+                        <?php endif ?>
+                      </td>
+                      <td>
+                        <?php if (strtolower($value['untuk_bayar']) == strtolower($value['untuk_pembayaran'])): ?>
+                        <?php echo esc($value['untuk_bayar']) ?>
+                        <?php else: ?>
+                          <?php if (strlen($value['untuk_bayar']) > 3): ?>
+                            <?php echo ucfirst($value['untuk_bayar']) ?>
+                            <?php else: ?>
+                              <?php echo strtoupper($value['untuk_bayar']) ?>
+                            <?php endif ?>
+                            <?php if (!empty($value['untuk_pembayaran'])): ?>
+                              <br><small><?php echo ucfirst($value['untuk_pembayaran']) ?></small>
+                            <?php endif ?>
+                          <?php endif ?>
+                        </td>
+                        <td>
+                          <?php echo function_exists('tanggal_indo') ? tanggal_indo($value['tanggal_pembayaran']) : esc($value['tanggal_pembayaran']) ?>
+                          <?php if (!empty($value['nama_administrator'])): ?>
+                            <br><small><?php echo esc($value['nama_administrator']) ?></small>
+                          <?php endif ?>
+                        </td>
+                        <td class="text-right">
+                          <a class="btn btn-sm btn-success" target="_BLANK" href="<?php echo base_url('tagihan/cetak/'.$value['id_tagihan']) ?>">
+                            <i class="bi bi-file-earmark-pdf" data-toggle="tooltip" data-placement="left" title="Cetak"></i>
+                          </a>
+
+                          <a class="btn btn-sm btn-danger btn-hps"
+                          href="<?php echo base_url('tagihan/perkelasan_tagihan/'.$value['id_perkelasan']) ?>"
+                          onclick="return confirm('Hapus dari Tagihan Perkelasan ?')">
+                          <i class="bi-x" data-toggle="tooltip" data-placement="left" title="Hapus"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  <?php endforeach ?>
+                <?php endif ?>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="3">Total Semua</th>
+                  <th>Rp. <?php echo number_format($ts, 0, ',', '.') ?></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="modalbayar">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Input Penerimaan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" id="form">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Kelas</label>
+                  <select class="custom-select form-control-border select2" name="id_perkelasan" required>
+                    <option selected disabled>Pilih Kelas</option>
+                    <?php foreach ($perkelasan as $key => $value): ?>
+                      <option value="<?php echo $value['id_perkelasan'] ?>">
+                        <?php echo $value['jenjang_kelas'].'-'.$value['singkatan_jurusan'].'-'.$value['nama_kelas'] ?>
+                      </option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Siswa</label>
+                  <select class="custom-select form-control-border select2" name="id_siswakelas">
+                    <option selected disabled>Pilih Siswa</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Tanggal</label>
+                  <input type="datetime-local" class="form-control" name="tanggal_pembayaran" value="<?php echo date('Y-m-d H:i:s') ?>">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3 g-1">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Rekening</label>
+                  <select class="custom-select form-control-border" name="id_rekening" required>
+                    <option selected disabled>Pilih Rekening</option>
+                    <?php foreach ($rekening as $key => $value): ?>
+                      <option value="<?php echo $value['id_rekening'] ?>">
+                        <?php if ($value['nomor_rekening'] == '-' || $value['nomor_rekening'] == ''): ?>
+                          <?php echo $value['bank_rekening'].' - '.$value['nama_rekening'] ?>
+                          <?php else: ?>
+                            <?php echo $value['bank_rekening'].' - '.$value['nomor_rekening'].' - '.$value['nama_rekening'] ?>
+                          <?php endif ?>
+                        </option>
+                      <?php endforeach ?>
+                    </select>
+                    <small class="text-danger">*) silahkan pilih rekening</small>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Total Penerimaan</label>
+                    <input type="text" id="total-penerimaan" class="form-control" placeholder="Total Penerimaan">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+              </div>
+              <div class="item">
+                <div class="alert alert-purple alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h5><i class="bi bi-info-lg"></i> Perhatian!</h5>
+                  Anda harus memilih <b>Kelas</b> dan <b>Siswa</b> terlebih dahulu untuk menampilkan <b>Item Penerimaan</b>.
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5 offset-md-7">
+                  <div class="form-group">
+                    <label>Total Tagihan</label>
+                    <input type="text" id="total-pembayaran" class="form-control" placeholder="Total Pembayaran">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5 offset-md-7">
+                  <div class="form-group">
+                    <label>Tunai</label>
+                    <input type="text" id="uang-diterima" class="form-control" placeholder="Uang Diterima" required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5 offset-md-7">
+                  <div class="form-group">
+                    <label>Total Kembalian</label>
+                    <input type="text" id="total-kembalian" class="form-control" placeholder="Total Kembalian" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div id="alert-rekening" class="alert alert-danger d-none mt-2"></div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Tutup</button>
+              <button type="button" class="btn btn-sm btn-purple bayar">Bayar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+      $(document).ready(function(){
+        // Kertika Mengubah id_perkelasan maka ambil data siswakelas berdasarkan id_perkelasan
+        $(document).on('change', 'select[name=id_perkelasan]', function() {
+          $.ajax({
+            type:'POST',
+            url:'<?php echo base_url("perkelasan/daftarsiswa") ?>/'+$(this).val(),
+            beforeSend: function() { $(".bg").show(); },
+            complete: function() { $(".bg").hide(); },
+            success:function(hasil) { $('select[name=id_siswakelas]').html('').html(hasil); }
+          });
+        });
+
+        // ketika mengubah id_siswakelas maka ambil tagihannya  
+        $(document).on('change', 'select[name=id_siswakelas]', function() {
+          $.ajax({
+            type:'POST',
+            url:'<?php echo base_url("tagihan/tagihan_siswakelas") ?>',
+            data:'id_siswakelas='+$(this).val(),
+            beforeSend: function() { $(".bg").show(); },
+            complete: function() { $(".bg").hide(); },
+            success:function(hasil) { $('.item').html('').html(hasil); }
+          });
+        });
+
+
+        $(function () {
+          const BASE = "<?php echo rtrim(base_url(), '/') ?>";
+
+
+          function toInt(s){ return Number((s||'').toString().replace(/[^0-9]/g,''))||0; }
+          function fmtIDR(n){ n = Math.max(0, Number(n)||0); return 'Rp. ' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
+
+
+          function recalcAll(){
+            let total = 0;
+
+
+            $('.box-bulan:checked').each(function(){
+              const $inp = $($(this).data('target'));
+              total += toInt($inp.val());
+            });
+
+
+            $('.box:checked').each(function(){
+              const $inp = $($(this).data('target'));
+              total += toInt($inp.val());
+            });
+
+
+            $('#total-penerimaan').val( fmtIDR(total) );
+
+
+            $('#total_tagihan, #total-pembayaran').val( fmtIDR(total) );
+
+
+            const cash = toInt($('#uang-diterima').val());
+            let kembali = Math.max(cash - total, 0);
+
+            if ($('#checktabungan').is(':checked')) {
+              $('#inputtabungan').prop('disabled', false).val( fmtIDR(kembali) );
+              kembali = 0;
+            } else {
+              $('#inputtabungan').prop('disabled', true).val('');
+            }
+            $('#total_kembalian, #total-kembalian').val( fmtIDR(kembali) );
+          }
+
+          $(document).on('change', '.box-bulan', function(){
+            const on  = $(this).is(':checked');
+            const sel = $(this).data('target');
+            const $inp = $(sel);
+            const $wrap = $inp.closest('.col-md-5');
+            $inp.prop('disabled', !on);
+            $wrap.find('input[type="hidden"]').prop('disabled', !on);
+            if (on && !toInt($inp.val())) $inp.val(fmtIDR(0));
+            recalcAll();
+          });
+
+          $(document).on('change', '.box', function(){
+            const on  = $(this).is(':checked');
+            const sel = $(this).data('target');
+            $(sel).prop('disabled', !on);
+            if (!on) $(sel).val('');
+            recalcAll();
+          });
+
+          $(document).on('input', '.nominal, .inputbox', function(){
+            const n = toInt($(this).val());
+            $(this).val( fmtIDR(n) );
+            recalcAll();
+          });
+
+          $('#total-penerimaan').on('input', function(){
+            const n = toInt($(this).val());
+            $(this).val( fmtIDR(n) );
+            $('#total_tagihan, #total-pembayaran').val( fmtIDR(n) );
+            const cash = toInt($('#uang-diterima').val());
+            let kembali = Math.max(cash - n, 0);
+            if ($('#checktabungan').is(':checked')) {
+              $('#inputtabungan').prop('disabled', false).val( fmtIDR(kembali) );
+              kembali = 0;
+            } else {
+              $('#inputtabungan').prop('disabled', true).val('');
+            }
+            $('#total_kembalian, #total-kembalian').val( fmtIDR(kembali) );
+          });
+
+          $('#uang-diterima').on('input', function(){
+            const n = toInt($(this).val());
+            $(this).val( fmtIDR(n) );
+            recalcAll();
+          });
+
+          $('#checktabungan').on('change', recalcAll);
+
+
+          $('#form').attr('action', BASE + '/tagihan/simpan');
+          $(document).on('click', '.bayar', function (e) {
+            e.preventDefault();
+
+
+            $('.box-bulan').each(function(){
+              const on  = $(this).is(':checked');
+              const $inp = $($(this).data('target'));
+              const $wrap = $inp.closest('.col-md-5');
+              $inp.prop('disabled', !on);
+              $wrap.find('input[type="hidden"]').prop('disabled', !on);
+            });
+            $('.box').each(function(){
+              const on  = $(this).is(':checked');
+              const $inp = $($(this).data('target'));
+              $inp.prop('disabled', !on);
+            });
+
+
+            const totalNow = toInt($('#total-penerimaan').val());
+            let $h = $('#form input[name="total_penerimaan"]');
+            if (!$h.length) $h = $('<input>', {type:'hidden', name:'total_penerimaan'}).appendTo('#form');
+            $h.val(totalNow);
+
+            let idRekening = $('select[name="id_rekening"]').val();
+            if (!idRekening) {
+              $('#alert-rekening')
+              .removeClass('d-none')
+              .text('Silakan pilih rekening terlebih dahulu sebelum melakukan pembayaran.');
+              $('select[name="id_rekening"]').focus();
+              return false;
+            }
+
+            $('#alert-rekening').addClass('d-none').text('');
+
+            $('#form')[0].submit();
+          });         
+          recalcAll();
+        });
+
+      })
+    </script>
+
+
+
+
+
+
+
